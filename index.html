@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello!</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    
+    <!-- import the webpage's javascript file -->
+  </head>
+
+  <body>
+    
+    <h1 id="title">Professional Cycling Doping History</h1>
+    <div id="chart"></div>
+    <div id="attributions">Photo by Victor Xok on Unsplash</div>
+
+    <script>
+      
+      const URI =
+        "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json";
+
+
+      fetch(URI)
+        .then(res => res.json())
+        .then(data => renderGraph(data));
+
+      
+      
+      const renderGraph = input => {
+        
+        
+        const data = input
+        console.log('data',input)
+        
+        
+        
+        const secondsMax = data.pop().Seconds
+        const secondsMin = data.shift().Seconds       
+        console.log('Min Max',secondsMin, secondsMax)
+        
+        
+        
+        const w = 1200
+        const h = 800;
+        const padding = 50
+        const radius = 7
+        
+           
+        const svg = d3.select('#chart')
+        .append('svg')
+        .attr('width',w)
+        .attr('height',h)
+        
+        
+        const xScale = d3.scaleLinear()
+        .domain([d3.min(data.map(x => x.Year)),d3.max(data.map(x => x.Year))])
+        .range([padding * 2,w-padding])
+ 
+        const yScale = d3.scaleLinear()
+        .domain([d3.max(data.map(x => x.Seconds)),d3.min(data.map(x => x.Seconds))])
+        .range([h-padding,padding])
+        
+        
+        
+        const timeFormat = d3.timeFormat("%M:%S");
+        const yearFormat = d3.timeFormat("%Y");
+        const yAxis = d3.axisLeft(yScale).tickFormat(timeFormat)
+        const xAxis = d3.axisBottom(xScale)
+        
+        
+        
+        const colorScale = d3.scaleLinear()
+        .domain([secondsMin,secondsMax])
+        .range([100,255])
+        
+          
+        svg.selectAll('circle')
+        .data(data)
+        .enter()
+        .append('circle')
+        .attr('class','dot')
+        .attr('data-xvalue', d => xScale(d.Year))
+        .attr('data-yvalue', d => yScale(d.Seconds))
+        .attr('cx', d => xScale(d.Year))
+        .attr('cy', d => yScale(d.Seconds))
+        .attr('r',radius)
+        .style('fill', (d,i) => {
+          const t = d.Seconds
+          const r = colorScale(t)
+          if ( d.Doping ){
+            return `rgba(${r},${50},${255})`
+          }
+          return 'white'
+        })
+        
+        
+        // AXIS AND LEGENDS
+        
+        
+        svg.append('g')
+        .attr('transform','translate(' + 0 + ',' + (h - padding) + ')')
+        .attr('id','x-axis')
+        .style('color','white')
+        .style('font-size','16px')
+        .call(xAxis)
+             
+        svg.append('g')
+        .attr('transform','translate(' + padding * 2 + ',0)')
+        .attr('id','y-axis')
+        .style('color','white')
+        .style('font-size','16px')
+        .call(yAxis)
+        
+    
+        
+        
+        const axisLabels = svg.append('g')
+        .attr('id',"axisLabels")
+  
+        axisLabels.append('text')
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -h/2 - 75)
+        .attr('y', padding *3)
+        .style('font-size', 36)
+        .style('fill','#fff')
+        .style('opacity','.33')
+        .text('Time (Minutes)');
+           
+        axisLabels.append('text')
+        .attr('x', w / 2 - 75)
+        .attr('y', h - padding * 1.5)
+        .style('font-size', 36)
+        .style('fill','#fff')
+        .style('opacity','.33')
+        .text('Time (Years)');
+        
+        
+        
+        const legend = svg.append('g')
+        .attr('id',"legend")
+        
+        legend.append('rect')
+        .attr('width',100)
+        .attr('height', 50)
+        .attr('x',w-100)
+        .attr('y',padding)
+        .style('fill','purple')
+  
+        legend.append('text')
+        .attr('x', w - 200)
+        .attr('y', 80)
+        .style('font-size', 24)
+        .style('fill','#fff')
+        .style('opacity','1')
+        .text('Doping');
+           
+        legend.append('rect')
+        .attr('width',100)
+        .attr('height', 50)
+        .attr('x',w-100)
+        .attr('y',padding*2)
+        .style('fill','white')
+  
+        legend.append('text')
+        .attr('x', w - 235)
+        .attr('y', 135)
+        .style('font-size', 24)
+        .style('fill','#fff')
+        .style('opacity','1')
+        .text('No Doping');
+        
+        
+        
+      }
+        
+      
+    </script>
+   
+    <!--     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script> -->
+    <script src="/script.js" defer></script>
+     <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+  </body>
+</html>

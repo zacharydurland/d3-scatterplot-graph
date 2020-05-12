@@ -1,0 +1,82 @@
+body {
+  font-family: 'Bree Serif', serif;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: url(https://cdn.glitch.com/5328de8e-2eac-4216-8426-11f4368f9ba8%2Fvictor-xok-Gi0OMNguFaw-unsplash.jpg?v=1589252991700);
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+
+h1 {
+  font-size: 3em;
+  color: white;
+  margin: 50px 0 50px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0,0,0,.75);
+}
+
+#chart {
+  position: relative;
+  box-shadow: 0 0 300px rgba(0,0,0,1), 0 0 75px rgba(100,100,75,.5);
+  margin-bottom: 100px;
+  background-color: rgba(100,100,75,.33)
+}
+
+
+.bar {
+  pointer-events: bounding-box;
+  fill: #507cbf
+}
+
+
+.bar:hover {
+  fill: #3f6194
+}
+
+#x-axis path {
+  stroke: white
+}
+
+#x-axis text {
+  fill:white
+}
+
+#y-axis  path{
+  stroke : white
+}
+
+#y-axis text {
+  fill:white;
+}
+
+.dot {
+  text-shadow: 0 0 10px rgba(0,0,0,1)
+}
+
+#tooltip {
+  position: absolute;
+  padding: 15px;
+  left:0;
+  top:0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  pointer-events:none;
+  background-color: #3f6194;
+  box-sizing: border-box;
+  color: #ebebeb;
+}
+
+#attributions {
+  color: #888888
+}
+
+
+
+
+
+
